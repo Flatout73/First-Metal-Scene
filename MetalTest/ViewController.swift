@@ -28,8 +28,11 @@ class ViewController: NSViewController {
                                              green: 0.4,
                                              blue: 0.21,
                                              alpha: 1.0)
-        renderer = Renderer(device: device)
+        metalView.colorPixelFormat = .bgra8Unorm_srgb
+        metalView.depthStencilPixelFormat = .depth32Float
+        renderer = Renderer(view: metalView, device: device)
         metalView.delegate = renderer
+       
     }
 
 
