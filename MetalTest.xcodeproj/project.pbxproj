@@ -16,6 +16,8 @@
 		7121A0CF222C514100203F2B /* MTextureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121A0CE222C514100203F2B /* MTextureLoader.swift */; };
 		7121A0D1222C99BA00203F2B /* MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121A0D0222C99BA00203F2B /* MathUtilities.swift */; };
 		7121A0D3222C9BCE00203F2B /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7121A0D2222C9BCE00203F2B /* teapot.obj */; };
+		71728BBB222DDA730079226A /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71728BBA222DDA730079226A /* Scene.swift */; };
+		71728BBD222EA58C0079226A /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71728BBC222EA58C0079226A /* Node.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		7121A0CE222C514100203F2B /* MTextureLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTextureLoader.swift; sourceTree = "<group>"; };
 		7121A0D0222C99BA00203F2B /* MathUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtilities.swift; sourceTree = "<group>"; };
 		7121A0D2222C9BCE00203F2B /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		71728BBA222DDA730079226A /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		71728BBC222EA58C0079226A /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +78,8 @@
 				7101BC4A2226F84A00C0D90C /* Shader.metal */,
 				7121A0CE222C514100203F2B /* MTextureLoader.swift */,
 				7121A0D0222C99BA00203F2B /* MathUtilities.swift */,
+				71728BBA222DDA730079226A /* Scene.swift */,
+				71728BBC222EA58C0079226A /* Node.swift */,
 			);
 			path = MetalTest;
 			sourceTree = "<group>";
@@ -152,7 +158,9 @@
 				7101BC4B2226F84A00C0D90C /* Shader.metal in Sources */,
 				7101BC3B2226C6BE00C0D90C /* ViewController.swift in Sources */,
 				7121A0CF222C514100203F2B /* MTextureLoader.swift in Sources */,
+				71728BBD222EA58C0079226A /* Node.swift in Sources */,
 				7101BC492226F7EA00C0D90C /* Renderer.swift in Sources */,
+				71728BBB222DDA730079226A /* Scene.swift in Sources */,
 				7121A0D1222C99BA00203F2B /* MathUtilities.swift in Sources */,
 				7101BC392226C6BE00C0D90C /* AppDelegate.swift in Sources */,
 			);
