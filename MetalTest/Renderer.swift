@@ -40,8 +40,11 @@ class Renderer: NSObject {
     
     var time: Float = 0
     var cameraWorldPosition = float3(0, 0, 2)
+    
     var viewMatrix = matrix_identity_float4x4
     var projectionMatrix = matrix_identity_float4x4
+    
+    var flyingCamera = FlyingCamera()
     
     init(view: MTKView, device: MTLDevice) {
         self.device = device
@@ -56,9 +59,11 @@ class Renderer: NSObject {
     static func buildSamplerState(device: MTLDevice) -> MTLSamplerState {
         let samplerDescriptor = MTLSamplerDescriptor()
         samplerDescriptor.normalizedCoordinates = true
-        samplerDescriptor.minFilter = .linear
+        samplerDescriptor.minFilter = .nearest
         samplerDescriptor.magFilter = .linear
         samplerDescriptor.mipFilter = .linear
+        samplerDescriptor.sAddressMode = .repeat
+        samplerDescriptor.tAddressMode = .repeat
         return device.makeSamplerState(descriptor: samplerDescriptor)!
     }
     
@@ -77,13 +82,29 @@ class Renderer: NSObject {
         
         let teapot = Node(name: "Teapot")
         
-        let modelURL = Bundle.main.url(forResource: "teapot", withExtension: "obj")!
+        let modelURL = Bundle.main.url(forResource: "spot_control_mesh", withExtension: "obj")!
         let asset = MDLAsset(url: modelURL, vertexDescriptor: vertexDescriptor, bufferAllocator: bufferAllocator)
-        teapot.mesh = try! MTKMesh.newMeshes(asset: asset, device: device).metalKitMeshes.first
-        teapot.material.baseColorTexture = try? textureLoader.newTexture(name: "tiles_baseColor", scaleFactor: 1.0, bundle: nil, options: options)
+        teapot.meshes = try! MTKMesh.newMeshes(asset: asset, device: device).metalKitMeshes
+        teapot.material.baseColorTexture = try? textureLoader.newTexture(name: "spot_texture", scaleFactor: 1.0, bundle: nil, options: options)
         teapot.material.specularPower = 200
         teapot.material.specularColor = float3(0.8, 0.8, 0.8)
         scene.rootNode.children.append(teapot)
+        
+        let surface = Node(name: "Surface")
+        let dimension: Float = 3.0
+        surface.meshes = [try! MTKMesh(mesh: MDLMesh.newPlane(withDimensions: float2(dimension, dimension), segments: vector_uint2(1, 1), geometryType: .triangles, allocator: bufferAllocator), device: device)]
+        surface.material.baseColorTexture = try! textureLoader.newTexture(name: "sand", scaleFactor: 1.0, bundle: nil, options: options)
+        surface.material.specularColor = float3(0.8, 0.8, 0.8)
+        surface.modelMatrix = float4x4(translationBy: float3(0, -3, 0)) * float4x4(scaleBy: 20)
+        scene.rootNode.children.append(surface)
+    
+        
+//        let terrainMesh = TerrainMesh(width: 64, height: 3, iterations: 6, smoothness: 0.95, device: device)
+//        let terrainNode = Node(name: "Terrain")
+//        terrainNode.terrainMesh = terrainMesh
+//        terrainNode.material.baseColorTexture = try? textureLoader.newTexture(name: "sand", scaleFactor: 1.0, bundle: nil, options: options)
+//        terrainNode.modelMatrix = float4x4(translationBy: float3(-1, -1, 0))
+//        scene.rootNode.children.append(terrainNode)
         
         return scene
     }
@@ -123,17 +144,35 @@ class Renderer: NSObject {
         }
     }
     
+    let updateCameraY = float3([0, 1, 0])
+    
+    let velocity: Float = 2
+    
+    var currentCameraTranslation: (x: Float, z: Float) = (0, 0)
+    var currentCameraRotation: (x: Float, y: Float) = (0, 0)
+    func updateCamera() {
+        flyingCamera.update(deltaX: currentCameraRotation.x, deltaY: currentCameraRotation.y, cameraTranslation: currentCameraTranslation)
+       // cameraHeading += angularVelocity * time
+        
+        // update camera location based on current heading
+       // cameraWorldPosition.x += currentCameraTranslation.x / 10 //-sin(cameraHeading) * velocity * time
+      //  cameraWorldPosition.z += currentCameraTranslation.z / 10 //-cos(cameraHeading) * velocity * time
+        //cameraWorldPosition = positionConstrainedToTerrain(forPosition: cameraPosition)
+        //cameraWorldPosition.y += Float(MBECameraHeight)
+        currentCameraRotation = (0, 0)
+    }
+
+    
     func update(_ view: MTKView) {
         time += 1 / Float(view.preferredFramesPerSecond)
-        
-        cameraWorldPosition = float3(0, 0, 2)
-        viewMatrix = float4x4(translationBy: -cameraWorldPosition)
+        updateCamera()
+        viewMatrix = flyingCamera.Look()//float4x4(translationBy: -cameraWorldPosition)
         
         let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
         projectionMatrix = float4x4(perspectiveProjectionFov: Float.pi / 3, aspectRatio: aspectRatio, nearZ: 0.1, farZ: 100)
         
         let angle = -time
-        scene.rootNode.modelMatrix = float4x4(rotationAbout: float3(0, 1, 0), by: angle) *  float4x4(scaleBy: 1.5)
+       // scene.rootNode.modelMatrix = float4x4(rotationAbout: float3(0, 1, 0), by: angle) *  float4x4(scaleBy: 1.5)
     }
     
     func drawNodeRecursive(_ node: Node, parentTransform: float4x4, commandEncoder: MTLRenderCommandEncoder) {
@@ -145,21 +184,13 @@ class Renderer: NSObject {
             }
         }
         
-        guard let mesh = node.mesh, let baseColorTexture = node.material.baseColorTexture else { return }
+        guard let baseColorTexture = node.material.baseColorTexture else { return }
         
         let viewProjectionMatrix = projectionMatrix * viewMatrix
         var vertexUniforms = VertexUniforms(viewProjectionMatrix: viewProjectionMatrix,
                                             modelMatrix: modelMatrix,
                                             normalMatrix: modelMatrix.normalMatrix)
         commandEncoder.setVertexBytes(&vertexUniforms, length: MemoryLayout<VertexUniforms>.size, index: 1)
-        
-//        let material = Material()
-//        material.specularPower = 200
-//        material.specularColor = float3(0.8, 0.8, 0.8)
-//
-//        let light0 = Light(worldPosition: float3( 2,  2, 2), color: float3(1, 0, 0))
-//        let light1 = Light(worldPosition: float3(-2,  2, 2), color: float3(0, 1, 0))
-//        let light2 = Light(worldPosition: float3( 0, -2, 2), color: float3(0, 0, 1))
         
         var fragmentUniforms = FragmentUniforms(cameraWorldPosition: cameraWorldPosition,
                                                 ambientLightColor: float3(0.1, 0.1, 0.1),
@@ -175,17 +206,28 @@ class Renderer: NSObject {
         commandEncoder.setFragmentTexture(baseColorTexture, index: 0)
         commandEncoder.setFragmentSamplerState(samplerState, index: 0)
         
-        let vertexBuffer = mesh.vertexBuffers.first!
-        commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: vertexBuffer.offset, index: 0)
-        
-        for submesh in mesh.submeshes {
-            let indexBuffer = submesh.indexBuffer
-            commandEncoder.drawIndexedPrimitives(type: submesh.primitiveType,
-                                                 indexCount: submesh.indexCount,
-                                                 indexType: submesh.indexType,
-                                                 indexBuffer: indexBuffer.buffer,
-                                                 indexBufferOffset: indexBuffer.offset)
+        for mesh in node.meshes {
+            let vertexBuffer = mesh.vertexBuffers.first!
+            commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: vertexBuffer.offset, index: 0)
+            
+            for submesh in mesh.submeshes {
+                let indexBuffer = submesh.indexBuffer
+                commandEncoder.drawIndexedPrimitives(type: submesh.primitiveType,
+                                                     indexCount: submesh.indexCount,
+                                                     indexType: submesh.indexType,
+                                                     indexBuffer: indexBuffer.buffer,
+                                                     indexBufferOffset: indexBuffer.offset)
+            }
         }
+//        else if let terrain = node.terrainMesh {
+//            commandEncoder.setVertexBuffer(terrain.vertexBuffer, offset: 0, index: 0)
+//            commandEncoder.drawIndexedPrimitives(type: .triangle,
+//                                                  indexCount: terrain.indexCount,
+//                                                  indexType: .uint16,
+//                                                  indexBuffer: terrain.indexBuffer,
+//                                                  indexBufferOffset: 0,
+//                                                  instanceCount: 1)
+//        }
     }
 }
 

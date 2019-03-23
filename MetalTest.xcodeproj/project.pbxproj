@@ -13,11 +13,20 @@
 		7101BC402226C6C000C0D90C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7101BC3E2226C6C000C0D90C /* Main.storyboard */; };
 		7101BC492226F7EA00C0D90C /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7101BC482226F7EA00C0D90C /* Renderer.swift */; };
 		7101BC4B2226F84A00C0D90C /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7101BC4A2226F84A00C0D90C /* Shader.metal */; };
+		710A3013224023E70055B05C /* duck.obj in Resources */ = {isa = PBXBuildFile; fileRef = 710A3012224023E70055B05C /* duck.obj */; };
+		710A3015224024450055B05C /* DuckNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710A3014224024450055B05C /* DuckNode.swift */; };
+		710A3017224025BE0055B05C /* Duck.metal in Sources */ = {isa = PBXBuildFile; fileRef = 710A3016224025BE0055B05C /* Duck.metal */; };
+		710A3019224025FE0055B05C /* RenderUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710A3018224025FE0055B05C /* RenderUtils.swift */; };
+		710A301D224040E50055B05C /* spot_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 710A301C224040E50055B05C /* spot_texture.png */; };
+		710A301F224042550055B05C /* spot_control_mesh.obj in Resources */ = {isa = PBXBuildFile; fileRef = 710A301E224042550055B05C /* spot_control_mesh.obj */; };
 		7121A0CF222C514100203F2B /* MTextureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121A0CE222C514100203F2B /* MTextureLoader.swift */; };
 		7121A0D1222C99BA00203F2B /* MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121A0D0222C99BA00203F2B /* MathUtilities.swift */; };
 		7121A0D3222C9BCE00203F2B /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7121A0D2222C9BCE00203F2B /* teapot.obj */; };
+		71361A9E22458A2D0032E052 /* MainMetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71361A9D22458A2D0032E052 /* MainMetalView.swift */; };
+		71361AA02245935F0032E052 /* FlyingCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71361A9F2245935F0032E052 /* FlyingCamera.swift */; };
 		71728BBB222DDA730079226A /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71728BBA222DDA730079226A /* Scene.swift */; };
 		71728BBD222EA58C0079226A /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71728BBC222EA58C0079226A /* Node.swift */; };
+		71728BBF222EF51F0079226A /* TerrainMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71728BBE222EF51F0079226A /* TerrainMesh.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,11 +39,20 @@
 		7101BC422226C6C000C0D90C /* MetalTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MetalTest.entitlements; sourceTree = "<group>"; };
 		7101BC482226F7EA00C0D90C /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		7101BC4A2226F84A00C0D90C /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
+		710A3012224023E70055B05C /* duck.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = duck.obj; sourceTree = "<group>"; };
+		710A3014224024450055B05C /* DuckNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckNode.swift; sourceTree = "<group>"; };
+		710A3016224025BE0055B05C /* Duck.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Duck.metal; sourceTree = "<group>"; };
+		710A3018224025FE0055B05C /* RenderUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderUtils.swift; sourceTree = "<group>"; };
+		710A301C224040E50055B05C /* spot_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spot_texture.png; sourceTree = "<group>"; };
+		710A301E224042550055B05C /* spot_control_mesh.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spot_control_mesh.obj; sourceTree = "<group>"; };
 		7121A0CE222C514100203F2B /* MTextureLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTextureLoader.swift; sourceTree = "<group>"; };
 		7121A0D0222C99BA00203F2B /* MathUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtilities.swift; sourceTree = "<group>"; };
 		7121A0D2222C9BCE00203F2B /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		71361A9D22458A2D0032E052 /* MainMetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMetalView.swift; sourceTree = "<group>"; };
+		71361A9F2245935F0032E052 /* FlyingCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingCamera.swift; sourceTree = "<group>"; };
 		71728BBA222DDA730079226A /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		71728BBC222EA58C0079226A /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		71728BBE222EF51F0079226A /* TerrainMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainMesh.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +85,7 @@
 		7101BC372226C6BE00C0D90C /* MetalTest */ = {
 			isa = PBXGroup;
 			children = (
-				7121A0D2222C9BCE00203F2B /* teapot.obj */,
+				710A3011224023A60055B05C /* Assets */,
 				7101BC382226C6BE00C0D90C /* AppDelegate.swift */,
 				7101BC3A2226C6BE00C0D90C /* ViewController.swift */,
 				7101BC3C2226C6C000C0D90C /* Assets.xcassets */,
@@ -80,8 +98,25 @@
 				7121A0D0222C99BA00203F2B /* MathUtilities.swift */,
 				71728BBA222DDA730079226A /* Scene.swift */,
 				71728BBC222EA58C0079226A /* Node.swift */,
+				71728BBE222EF51F0079226A /* TerrainMesh.swift */,
+				710A3014224024450055B05C /* DuckNode.swift */,
+				710A3018224025FE0055B05C /* RenderUtils.swift */,
+				71361A9D22458A2D0032E052 /* MainMetalView.swift */,
+				71361A9F2245935F0032E052 /* FlyingCamera.swift */,
 			);
 			path = MetalTest;
+			sourceTree = "<group>";
+		};
+		710A3011224023A60055B05C /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				710A301C224040E50055B05C /* spot_texture.png */,
+				710A3016224025BE0055B05C /* Duck.metal */,
+				710A3012224023E70055B05C /* duck.obj */,
+				7121A0D2222C9BCE00203F2B /* teapot.obj */,
+				710A301E224042550055B05C /* spot_control_mesh.obj */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,8 +177,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				710A3013224023E70055B05C /* duck.obj in Resources */,
 				7101BC3D2226C6C000C0D90C /* Assets.xcassets in Resources */,
 				7101BC402226C6C000C0D90C /* Main.storyboard in Resources */,
+				710A301D224040E50055B05C /* spot_texture.png in Resources */,
+				710A301F224042550055B05C /* spot_control_mesh.obj in Resources */,
 				7121A0D3222C9BCE00203F2B /* teapot.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,10 +194,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				7101BC4B2226F84A00C0D90C /* Shader.metal in Sources */,
+				71728BBF222EF51F0079226A /* TerrainMesh.swift in Sources */,
+				710A3017224025BE0055B05C /* Duck.metal in Sources */,
 				7101BC3B2226C6BE00C0D90C /* ViewController.swift in Sources */,
+				71361A9E22458A2D0032E052 /* MainMetalView.swift in Sources */,
+				71361AA02245935F0032E052 /* FlyingCamera.swift in Sources */,
 				7121A0CF222C514100203F2B /* MTextureLoader.swift in Sources */,
+				710A3019224025FE0055B05C /* RenderUtils.swift in Sources */,
 				71728BBD222EA58C0079226A /* Node.swift in Sources */,
 				7101BC492226F7EA00C0D90C /* Renderer.swift in Sources */,
+				710A3015224024450055B05C /* DuckNode.swift in Sources */,
 				71728BBB222DDA730079226A /* Scene.swift in Sources */,
 				7121A0D1222C99BA00203F2B /* MathUtilities.swift in Sources */,
 				7101BC392226C6BE00C0D90C /* AppDelegate.swift in Sources */,

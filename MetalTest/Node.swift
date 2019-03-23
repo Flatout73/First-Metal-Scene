@@ -20,8 +20,12 @@ class Node {
     weak var parent: Node?
     var children = [Node]()
     var modelMatrix = matrix_identity_float4x4
-    var mesh: MTKMesh?
+    var meshes: [MTKMesh] = []
+    //var terrainMesh: TerrainMesh?
     var material = Material()
+    
+    let vertexDescriptor: MTLVertexDescriptor = MTLVertexDescriptor()
+    var pipelineState: MTLRenderPipelineState?
     
     init(name: String) {
         self.name = name
@@ -37,4 +41,6 @@ class Node {
         }
         return nil
     }
+    
+    open func loadAssets(_ device: MTLDevice, view: MTKView) { }
 }

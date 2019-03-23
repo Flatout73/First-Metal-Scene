@@ -11,11 +11,16 @@ import MetalKit
 
 class ViewController: NSViewController {
     
-    var metalView: MTKView {
-        return view as! MTKView
+    var metalView: MainMetalView {
+        return view as! MainMetalView
+    }
+    var mouseLocation: NSPoint {
+        return NSEvent.mouseLocation
     }
 
     var renderer: Renderer?
+    
+    var trackingArea: NSTrackingArea?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +37,24 @@ class ViewController: NSViewController {
         metalView.depthStencilPixelFormat = .depth32Float
         renderer = Renderer(view: metalView, device: device)
         metalView.delegate = renderer
-       
+        metalView.renderer = renderer
+        
+//        NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved]) {
+//            print("mouseLocation:", String(format: "%.1f, %.1f", self.mouseLocation.x, self.mouseLocation.y))
+//           // print("windowLocation:", String(format: "%.1f, %.1f", self.location.x, self.location.y))
+//            return $0
+//        }
+        
+        trackingArea = NSTrackingArea(rect: self.view.bounds, options: [.activeAlways, .inVisibleRect,
+            .mouseEnteredAndExited, .mouseMoved], owner: self, userInfo: nil)
+        
+        self.view.addTrackingArea(trackingArea!)
     }
-
-
+    
+    override func mouseMoved(with event: NSEvent) {
+        super.mouseMoved(with: event)
+       
+        renderer?.currentCameraRotation = (Float(event.deltaX), Float(event.deltaY))
+    }
 }
 
