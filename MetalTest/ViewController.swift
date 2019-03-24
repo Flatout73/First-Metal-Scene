@@ -24,7 +24,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        metalView.device = MTLCreateSystemDefaultDevice()
+        metalView.device = RenderUtils.shared.device
         guard let device = metalView.device else {
             fatalError("Device not created. Run on a physical device")
         }

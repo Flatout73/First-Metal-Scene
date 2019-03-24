@@ -9,12 +9,6 @@
 import simd
 import MetalKit
 
-class Material {
-    var specularColor = float3(1, 1, 1)
-    var specularPower = Float(1)
-    var baseColorTexture: MTLTexture?
-}
-
 class Node {
     var name: String
     weak var parent: Node?
@@ -22,10 +16,10 @@ class Node {
     var modelMatrix = matrix_identity_float4x4
     var meshes: [MTKMesh] = []
     //var terrainMesh: TerrainMesh?
-    var material = Material()
+    var materials: [Material] = []
     
-    let vertexDescriptor: MTLVertexDescriptor = MTLVertexDescriptor()
-    var pipelineState: MTLRenderPipelineState?
+    let vertexDescriptor: MDLVertexDescriptor = MDLVertexDescriptor()
+    var pipelineState: MTLRenderPipelineState!
     
     init(name: String) {
         self.name = name
@@ -42,5 +36,16 @@ class Node {
         return nil
     }
     
-    open func loadAssets(_ device: MTLDevice, view: MTKView) { }
+    func loadAssets(_ device: MTLDevice, view: MTKView) { }
+    
+    func render(_ commandEncoder: MTLRenderCommandEncoder, projectionMatrix: float4x4, viewMatrix: float4x4) {
+        guard let pipelineState = pipelineState else { return }
+        commandEncoder.label = "\(name) render encoder"
+        commandEncoder.pushDebugGroup("draw \(name)")
+        commandEncoder.setRenderPipelineState(pipelineState)
+        
+        defer {
+            commandEncoder.popDebugGroup()
+        }
+    }
 }

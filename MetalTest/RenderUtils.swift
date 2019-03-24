@@ -9,6 +9,17 @@
 import MetalKit
 
 class RenderUtils {
+    static let shared = RenderUtils()
+    public let device: MTLDevice
+    public let textureLoader: MTKTextureLoader
+    
+    public var flyingCamera = FlyingCamera()
+    
+    private init() {
+        device = MTLCreateSystemDefaultDevice()!
+        textureLoader = MTKTextureLoader(device: device)
+    }
+    
     class func createPipelineStateDescriptor(vertex: String, fragment: String, device: MTLDevice, view: MTKView) -> MTLRenderPipelineDescriptor {
         
         let defaultLibrary = device.makeDefaultLibrary()!
@@ -21,7 +32,7 @@ class RenderUtils {
         pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat
         pipelineStateDescriptor.sampleCount = view.sampleCount
         pipelineStateDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat
-        pipelineStateDescriptor.stencilAttachmentPixelFormat = view.depthStencilPixelFormat
+        //pipelineStateDescriptor.stencilAttachmentPixelFormat = view.depthStencilPixelFormat
         
         return pipelineStateDescriptor
     }
