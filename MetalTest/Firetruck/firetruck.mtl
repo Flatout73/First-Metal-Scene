@@ -1,7 +1,7 @@
 # Material Count: 2
 
 newmtl materialBody
-map_Kd BodyBaseColor
+map_Kd BodyBaseColor.png
 Kd 0.300000 0.000000 0.000000
 map_metallic BodyMetallicMap
 metallic 0.03 0.1500000 0.1500000
