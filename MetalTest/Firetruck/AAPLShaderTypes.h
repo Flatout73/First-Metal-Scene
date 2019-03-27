@@ -99,6 +99,5 @@ typedef struct
     float         mapWeights[AAPLNumMeshTextureIndices];
 } AAPLMaterialUniforms;
 
-
 #endif /* AAPLShaderTypes_h */
 

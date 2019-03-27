@@ -1,5 +1,5 @@
 #
-# house.mtl
+# treasure_chest.mtl
 #
 
 newmtl wood
@@ -9,4 +9,4 @@ Ka 0.200000 0.200000 0.200000
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ns 0.000000
-map_Kd house.jpg
+map_Kd treasure_chest.jpg

@@ -77,7 +77,5 @@ class MainMetalView: MTKView {
         default:
             break
         }
-        
-        
     }
 }

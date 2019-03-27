@@ -18,6 +18,15 @@ enum {
 enum {
     fragmentBufferIndexUniforms = 0
 };
+    
+    struct FogParameters {
+        float3 color;
+        float fStart;
+        float fEnd;
+        float fDensity;
+        
+        int iEquation;
+    };
 
 struct Vertex {
     float3 position  [[attribute(0)]];
@@ -33,12 +42,16 @@ struct VertexCarOut {
     float3 normal;
     float3 bitangent;
     float3 tangent;
+    
+    float distance_to_object;
 };
 
 struct Uniforms {
     float4x4 modelMatrix;
-    float4x4 modelViewProjectionMatrix;
+    float4x4 modelViewMatrix;
+    float4x4 projectionMatrix;
     float3x3 normalMatrix;
+    
     float3 cameraPos;
     float3 directionalLightInvDirection;
     float3 lightPosition;
@@ -63,6 +76,19 @@ struct LightingParameters {
 };
     
 #define SRGB_ALPHA 0.055
+    
+    float getFogFactor1(FogParameters params, float fFogCoord)
+    {
+        float fResult = 0.0;
+        if(params.iEquation == 0) // линейный туман
+            fResult = (params.fEnd - fFogCoord)/(params.fEnd - params.fStart);
+        else if(params.iEquation == 1) // экспоненциальный туман
+            fResult = exp(-params.fDensity * fFogCoord);
+        else if(params.iEquation == 2) // экспоненциальный туман 2
+            fResult = exp(-pow(params.fDensity * fFogCoord, 2.0));
+        fResult = 1.0 - clamp(fResult, 0.0, 1.0);
+        return fResult;
+    }
 
 float linear_from_srgb(float x) {
     if (x <= 0.04045)
@@ -75,16 +101,20 @@ float3 linear_from_srgb(float3 rgb) {
     return float3(linear_from_srgb(rgb.r), linear_from_srgb(rgb.g), linear_from_srgb(rgb.b));
 }
 
-vertex VertexCarOut vertex_car(Vertex in [[stage_in]],
+vertex VertexCarOut vertex_helmet(Vertex in [[stage_in]],
                              constant Uniforms &uniforms [[buffer(vertexBufferIndexUniforms)]])
 {
     VertexCarOut out;
-    out.position = uniforms.modelViewProjectionMatrix * float4(in.position, 1.0);
+    out.position = uniforms.projectionMatrix * uniforms.modelViewMatrix * float4(in.position, 1.0);
     out.texCoords = in.texCoords;
     out.normal = uniforms.normalMatrix * in.normal;
     out.tangent = uniforms.normalMatrix * in.tangent;
     out.bitangent = uniforms.normalMatrix * cross(in.normal, in.tangent);
     out.worldPos = (uniforms.modelMatrix * float4(in.position, 1.0)).xyz;
+    
+    // Calculate the distance to the object which is used for how much fog obsures the object
+    float4 position_modelviewspace = uniforms.modelViewMatrix * float4(in.position, 1);
+    out.distance_to_object = abs(position_modelviewspace.z/position_modelviewspace.w);
     return out;
 }
 
@@ -129,8 +159,9 @@ static float3 specularTerm(LightingParameters parameters) {
     return specularOutput;
 }
 
-fragment half4 fragment_car(VertexCarOut in                     [[stage_in]],
+fragment half4 fragment_helmet(VertexCarOut in                     [[stage_in]],
                              constant Uniforms &uniforms      [[buffer(fragmentBufferIndexUniforms)]],
+                               constant FogParameters &fogParams [[buffer(1)]],
                              texture2d<float> baseColorMap    [[texture(textureIndexBaseColor)]],
                              texture2d<float> metallicMap     [[texture(textureIndexMetallic)]],
                              texture2d<float> roughnessMap    [[texture(textureIndexRoughness)]],
@@ -171,7 +202,9 @@ fragment half4 fragment_car(VertexCarOut in                     [[stage_in]],
     
     float3 emissiveColor = emissiveMap.sample(linearSampler, in.texCoords).rgb;
 
-    float3 color = diffuseTerm(parameters) + specularTerm(parameters) + emissiveColor;
+    float3 finalColor = diffuseTerm(parameters) + specularTerm(parameters) + emissiveColor;
+    
+    finalColor = mix(finalColor, fogParams.color, getFogFactor1(fogParams, in.distance_to_object));
 
-    return half4(half3(color), baseColor.a);
+    return half4(half3(finalColor), baseColor.a);
 }

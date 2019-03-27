@@ -12,12 +12,14 @@ enum Shape {
     case Plane
     case Simple(url: URL)
     case Cube
+    case SkyBox
 }
 
 struct VertexUniforms {
     var viewProjectionMatrix: float4x4
     var modelMatrix: float4x4
     var normalMatrix: float3x3
+    var viewMatrix: float4x4
 }
 
 struct FragmentUniforms {
@@ -28,6 +30,15 @@ struct FragmentUniforms {
     var light0 = Light()
     var light1 = Light()
     var light2 = Light()
+}
+
+struct FogParameters {
+    var color: float3
+    var start: Float
+    var end: Float
+    var demsity: Float
+    
+    var iEquation: Int32
 }
 
 class ShapeNode: Node {
@@ -47,36 +58,33 @@ class ShapeNode: Node {
     }
     
     override func loadAssets(_ device: MTLDevice, view: MTKView) {
-        let library = device.makeDefaultLibrary()
-        let vertexFunction = library?.makeFunction(name: "vertex_main")
-        let fragmentFunction = library?.makeFunction(name: "fragment_main")
-        
         buildVertexDescriptor()
         
-        let pipelineDescriptor = MTLRenderPipelineDescriptor()
-        pipelineDescriptor.vertexFunction = vertexFunction
-        pipelineDescriptor.fragmentFunction = fragmentFunction
-        pipelineDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat
+        let pipelineDescriptor = RenderUtils.createPipelineStateDescriptor(vertex: "vertex_main", fragment: "fragment_main", device: device, view: view)
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)
         
-        do {
-            pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-        } catch let error as NSError {
-            print("error: \(error.localizedDescription)")
-        }
+        pipelineState = RenderUtils.createPipeLineStateWithDescriptor(device: device, pipelineStateDescriptor: pipelineDescriptor)
         
         let bufferAllocator = MTKMeshBufferAllocator(device: device)
         
         switch shape {
         case .Plane:
-            let dimension: Float = 3.0
-            meshes = [try! MTKMesh(mesh: MDLMesh.newPlane(withDimensions: float2(dimension, dimension), segments: vector_uint2(1, 1), geometryType: .triangles, allocator: bufferAllocator), device: device)]
+            let dimension: Float = 8.0
+            meshes = [try! MTKMesh(mesh: MDLMesh.newPlane(withDimensions: float2(dimension, dimension), segments: vector_uint2(1, 1), geometryType: .quads, allocator: bufferAllocator), device: device)]
         case .Simple(let modelURL):
             let asset = MDLAsset(url: modelURL, vertexDescriptor: vertexDescriptor, bufferAllocator: bufferAllocator)
             meshes = try! MTKMesh.newMeshes(asset: asset, device: device).metalKitMeshes
-        default:
-            ()
+        case .Cube:
+            let dimension: Float = 8.0
+            meshes = [try! MTKMesh(mesh: MDLMesh.newBox(withDimensions: float3(dimension, dimension, dimension), segments: vector_uint3(1, 1, 1), geometryType: .triangles, inwardNormals: true, allocator: bufferAllocator), device: device)]
+        case .SkyBox:
+            let dimension: Float = 3000.0
+            for i in 0..<6 {
+                meshes.append(try! MTKMesh(mesh: MDLMesh.newPlane(withDimensions: float2(dimension, dimension), segments: vector_uint2(1, 1), geometryType: .triangles, allocator: bufferAllocator), device: device))
+            }
+            for side in ["up", "rt", "lf", "dn", "bk", "ft"] {
+                materials.append(Material(baseColorTexture: try! RenderUtils.shared.textureLoader.newTexture(name: "alpha-island_\(side)", scaleFactor: 1, bundle: nil, options: [.generateMipmaps : true, .SRGB : true])))
+            }
         }
     }
     
@@ -88,7 +96,7 @@ class ShapeNode: Node {
         let viewProjectionMatrix = projectionMatrix * viewMatrix
         var vertexUniforms = VertexUniforms(viewProjectionMatrix: viewProjectionMatrix,
                                             modelMatrix: modelMatrix,
-                                            normalMatrix: modelMatrix.normalMatrix)
+                                            normalMatrix: modelMatrix.normalMatrix, viewMatrix: viewMatrix)
         commandEncoder.setVertexBytes(&vertexUniforms, length: MemoryLayout<VertexUniforms>.size, index: 1)
         
         var fragmentUniforms = FragmentUniforms(cameraWorldPosition: RenderUtils.shared.flyingCamera.vEye,
@@ -99,6 +107,9 @@ class ShapeNode: Node {
                                                 light1: scene.lights[1],
                                                 light2: scene.lights[2])
         commandEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.size, index: 0)
+        
+        var fog = FogParameters(color: float3(0.5, 0.5, 0.5), start: 10, end: 75, demsity: 0.04, iEquation: 0)
+        commandEncoder.setFragmentBytes(&fog, length: MemoryLayout<FogParameters>.size, index: 1)
         
         commandEncoder.setFragmentTexture(baseColorTexture, index: 0)
         

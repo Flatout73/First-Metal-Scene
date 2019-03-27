@@ -7,6 +7,7 @@
 //
 
 import MetalKit
+import Cocoa
 
 class Material {
     var specularColor = float3(1, 1, 1)
@@ -20,10 +21,38 @@ class Material {
     
     func texture(for semantic: MDLMaterialSemantic, in material: MDLMaterial?, textureLoader: MTKTextureLoader) -> MTLTexture? {
         guard let materialProperty = material?.property(with: semantic) else { return nil }
-        guard let sourceTexture = materialProperty.textureSamplerValue?.texture else { return nil }
         let wantMips = materialProperty.semantic != .tangentSpaceNormal
         let options: [MTKTextureLoader.Option : Any] = [ .generateMipmaps : wantMips ]
-        return try? textureLoader.newTexture(texture: sourceTexture, options: options)
+        if let sourceTexture = materialProperty.textureSamplerValue?.texture {
+            return try? textureLoader.newTexture(texture: sourceTexture, options: options)
+ //       }
+//        else if let col = materialProperty.color {
+//            let flo = materialProperty.float4Value
+//            let color = CGColor(red: CGFloat(flo[0]), green: CGFloat(flo[1]), blue: CGFloat(flo[2]), alpha: 1)
+////            let colorSpace = CGColorSpaceCreateDeviceRGB()
+////            let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue)
+////            let context = CGBitmapContextCreate(
+////                nil,
+////                Int(size.width),
+////                Int(size.height),
+////                8,
+////                0,
+////                colorSpace,
+////                bitmapInfo)
+////
+////            drawFunc(context: context)
+////
+////            let image = CGBitmapContextCreateImage(context)
+//            let size = 1000
+//            let context = CGContext(data: nil, width: size, height: size, bitsPerComponent: 8, bytesPerRow: size*4, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+//            context?.setFillColor(color)
+//            context?.fill(CGRect(x: 0, y: 0, width: size, height: size))
+//            let cgimage = context?.makeImage()
+//            guard let image = cgimage else { return nil }
+//            return try? textureLoader.newTexture(cgImage: image, options: options)
+        } else {
+            return nil
+        }
     }
     
     init(material sourceMaterial: MDLMaterial?, textureLoader: MTKTextureLoader) {
@@ -37,4 +66,5 @@ class Material {
     init(baseColorTexture: MTLTexture?) {
         self.baseColorTexture = baseColorTexture
     }
+
 }

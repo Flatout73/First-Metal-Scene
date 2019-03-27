@@ -55,6 +55,8 @@ class Renderer: NSObject {
         return device.makeSamplerState(descriptor: samplerDescriptor)!
     }
     
+    let skybox = SkyBox()
+    
     func buildScene(device: MTLDevice) -> Scene {
         let textureLoader = RenderUtils.shared.textureLoader
         let options: [MTKTextureLoader.Option : Any] = [.generateMipmaps : true, .SRGB : true]
@@ -67,6 +69,14 @@ class Renderer: NSObject {
         let light2 = Light(worldPosition: float3( 0, -2, 2), color: float3(0, 0, 1))
         scene.lights = [ light0, light1, light2 ]
         
+        
+        let cube = ShapeNode(name: "Cube", shape: .Cube)
+        cube.loadAssets(device, view: view)
+        let cubematerial = Material(baseColorTexture: try? textureLoader.newTexture(name: "spot_texture", scaleFactor: 1.0, bundle: nil, options: options))
+        cube.scene = scene
+        cube.materials = [cubematerial]
+        scene.rootNode.children.append(cube)
+        
         let modelURL = Bundle.main.url(forResource: "spot_control_mesh", withExtension: "obj")!
         let teapot = ShapeNode(name: "Teapot", shape: .Simple(url: modelURL))
         
@@ -76,11 +86,11 @@ class Renderer: NSObject {
         material.specularColor = float3(0.8, 0.8, 0.8)
         teapot.materials.append(material)
         teapot.scene = scene
-        scene.rootNode.children.append(teapot)
+        //scene.rootNode.children.append(teapot)
         
         let surface = ShapeNode(name: "Surface", shape: .Plane)
         
-        let material2 = Material(baseColorTexture: try? textureLoader.newTexture(name: "sand", scaleFactor: 1.0, bundle: nil, options: options))
+        let material2 = Material(baseColorTexture: try? textureLoader.newTexture(name: "marsTexture", scaleFactor: 1.0, bundle: nil, options: options))
         surface.loadAssets(device, view: view)
         material2.specularColor = float3(0.8, 0.8, 0.8)
         surface.materials.append(material2)
@@ -88,13 +98,21 @@ class Renderer: NSObject {
         surface.scene = scene
         scene.rootNode.children.append(surface)
         
-        let helmet = HelmetNode(name: "Helmet")
-        helmet.loadAssets(device, view: view)
-        //scene.rootNode.children.append(helmet)
+        skybox.loadAssets(device, view: view)
+        skybox.scene = scene
+        
+//        let helmet = HelmetNode(name: "Helmet")
+//        helmet.loadAssets(device, view: view)
+//        helmet.modelMatrix = float4x4(translationBy: float3(0, 0, 0))
+//        scene.rootNode.children.append(helmet)
+
+//        let car = CarNode(name: "Car")
+//        car.loadAssets(device, view: view)
+//        scene.rootNode.children.append(car)
         
         let text = TextNode(name: "Text")
         text.loadAssets(device, view: view)
-        scene.rootNode.children.append(text)
+        //scene.rootNode.children.append(text)
         
 //        let terrainMesh = TerrainMesh(width: 64, height: 3, iterations: 6, smoothness: 0.95, device: device)
 //        let terrainNode = Node(name: "Terrain")
@@ -131,7 +149,7 @@ class Renderer: NSObject {
         viewMatrix = RenderUtils.shared.flyingCamera.Look()//float4x4(translationBy: -cameraWorldPosition)
         
         let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
-        projectionMatrix = float4x4(perspectiveProjectionFov: Float.pi / 3, aspectRatio: aspectRatio, nearZ: 0.1, farZ: 100)
+        projectionMatrix = float4x4(perspectiveProjectionFov: Float.pi / 3, aspectRatio: aspectRatio, nearZ: 0.1, farZ: 10000)
         
         let angle = -time
        // scene.rootNode.modelMatrix = float4x4(rotationAbout: float3(0, 1, 0), by: angle) *  float4x4(scaleBy: 1.5)
@@ -148,26 +166,35 @@ class Renderer: NSObject {
         
         node.render(commandEncoder, projectionMatrix: projectionMatrix, viewMatrix: viewMatrix)
     }
+    
+    let semaphore = DispatchSemaphore(value: 1)
 }
 
 extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
     
     func draw(in view: MTKView) {
+        
+        semaphore.wait(timeout: .distantFuture)
         guard let drawable = view.currentDrawable,
-           // let pipelineState = pipelineState,
+            // let pipelineState = pipelineState,
             let renderPassDescriptor = view.currentRenderPassDescriptor else { return }
         update(view)
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
-            let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-            //commandEncoder.setFrontFacing(.counterClockwise)
-            //commandEncoder.setCullMode(.back)
-            commandEncoder.setDepthStencilState(depthStencilState)
-            commandEncoder.setFragmentSamplerState(samplerState, index: 0)
-            drawNodeRecursive(scene.rootNode, parentTransform: matrix_identity_float4x4, commandEncoder: commandEncoder)
-            commandEncoder.endEncoding()
-            commandBuffer.present(drawable)
-            commandBuffer.commit()
+        let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+         //commandEncoder.setFrontFacing(.counterClockwise)
+         //commandEncoder.setCullMode(.back)
+        commandEncoder.setDepthStencilState(depthStencilState)
+        commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+        skybox.render(commandEncoder, projectionMatrix: projectionMatrix, viewMatrix: viewMatrix)
+        drawNodeRecursive(scene.rootNode, parentTransform: matrix_identity_float4x4, commandEncoder: commandEncoder)
+        commandEncoder.endEncoding()
+        
+        commandBuffer.addCompletedHandler {_ in 
+            self.semaphore.signal()
+        }
+        commandBuffer.present(drawable)
+        commandBuffer.commit()
     }
 }

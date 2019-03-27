@@ -28,7 +28,8 @@ enum FragmentBufferIndex: Int {
 
 struct Uniforms {
     let modelMatrix: float4x4
-    let modelViewProjectionMatrix: float4x4
+    let modelViewMatrix: float4x4
+    let projectionMatrix: float4x4
     let normalMatrix: float3x3
     let cameraPosition: float3
     let lightDirection: float3
@@ -38,7 +39,8 @@ struct Uniforms {
          cameraPosition: float3, lightDirection: float3, lightPosition: float3)
     {
         self.modelMatrix = modelMatrix
-        self.modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix
+        self.modelViewMatrix = viewMatrix * modelMatrix
+        self.projectionMatrix = projectionMatrix
         self.normalMatrix = modelMatrix.normalMatrix
         self.cameraPosition = cameraPosition
         self.lightDirection = lightDirection
@@ -56,7 +58,7 @@ class HelmetNode: Node {
     }
     
     override func loadAssets(_ device: MTLDevice, view: MTKView) {
-        let pipelineStateDescriptor = RenderUtils.createPipelineStateDescriptor(vertex: "vertex_car", fragment: "fragment_car", device: device, view: view)
+        let pipelineStateDescriptor = RenderUtils.createPipelineStateDescriptor(vertex: "vertex_helmet", fragment: "fragment_helmet", device: device, view: view)
         loadCar(device: device, pipelineStateDescriptor: pipelineStateDescriptor)
         pipelineState = RenderUtils.createPipeLineStateWithDescriptor(device: device, pipelineStateDescriptor: pipelineStateDescriptor)
     }
@@ -78,7 +80,7 @@ class HelmetNode: Node {
     }
     
     func loadCar(device: MTLDevice, pipelineStateDescriptor: MTLRenderPipelineDescriptor) {
-        guard let modelURL = Bundle.main.url(forResource: "helmet", withExtension: "obj") else {
+        guard let modelURL = Bundle.main.url(forResource: "treasure_chest", withExtension: "obj") else {
             fatalError("Could not find model file in app bundle")
         }
         
@@ -146,6 +148,9 @@ class HelmetNode: Node {
                                     lightPosition: lightWorldPosition)
             commandEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: VertexBufferIndex.uniforms.rawValue)
             commandEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: FragmentBufferIndex.uniforms.rawValue)
+            
+            var fog = FogParameters(color: float3(0.5, 0.5, 0.5), start: 10, end: 75, demsity: 0.04, iEquation: 0)
+            commandEncoder.setFragmentBytes(&fog, length: MemoryLayout<FogParameters>.size, index: 1)
             
             for (bufferIndex, vertexBuffer) in mesh.vertexBuffers.enumerated() {
                 commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: vertexBuffer.offset, index: bufferIndex)

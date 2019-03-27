@@ -39,13 +39,12 @@ class Node {
     func loadAssets(_ device: MTLDevice, view: MTKView) { }
     
     func render(_ commandEncoder: MTLRenderCommandEncoder, projectionMatrix: float4x4, viewMatrix: float4x4) {
+        defer {
+            commandEncoder.popDebugGroup()
+        }
         guard let pipelineState = pipelineState else { return }
         commandEncoder.label = "\(name) render encoder"
         commandEncoder.pushDebugGroup("draw \(name)")
         commandEncoder.setRenderPipelineState(pipelineState)
-        
-        defer {
-            commandEncoder.popDebugGroup()
-        }
     }
 }

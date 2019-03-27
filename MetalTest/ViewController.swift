@@ -17,8 +17,6 @@ class ViewController: NSViewController {
     var mouseLocation: NSPoint {
         return NSEvent.mouseLocation
     }
-
-    var renderer: Renderer?
     
     var trackingArea: NSTrackingArea?
     
@@ -35,9 +33,9 @@ class ViewController: NSViewController {
                                              alpha: 1.0)
         metalView.colorPixelFormat = .bgra8Unorm_srgb
         metalView.depthStencilPixelFormat = .depth32Float
-        renderer = Renderer(view: metalView, device: device)
-        metalView.delegate = renderer
-        metalView.renderer = renderer
+        metalView.sampleCount = 1
+        metalView.renderer = Renderer(view: metalView, device: device)
+        metalView.delegate = metalView.renderer
         
 //        NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved]) {
 //            print("mouseLocation:", String(format: "%.1f, %.1f", self.mouseLocation.x, self.mouseLocation.y))
@@ -54,7 +52,9 @@ class ViewController: NSViewController {
     override func mouseMoved(with event: NSEvent) {
         super.mouseMoved(with: event)
        
-        renderer?.currentCameraRotation = (Float(event.deltaX), Float(event.deltaY))
+        metalView.renderer?.currentCameraRotation = (Float(event.deltaX), Float(event.deltaY))
+        
+        CGDisplayMoveCursorToPoint(CGMainDisplayID(), CGPoint(x: NSScreen.main!.frame.midX, y: NSScreen.main!.frame.midY))
     }
 }
 

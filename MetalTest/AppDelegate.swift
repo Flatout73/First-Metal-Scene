@@ -11,10 +11,10 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        
+        NSApp.activate(ignoringOtherApps: true)
+        NSApplication.shared.presentationOptions = [.hideMenuBar, .hideDock]
+        NSCursor.hide()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

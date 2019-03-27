@@ -16,6 +16,15 @@ struct Light {
     float3 color;
 };
 
+struct FogParameters {
+    float3 color;
+    float fStart;
+    float fEnd;
+    float fDensity;
+
+    int iEquation;
+};
+
 struct FragmentUniforms {
     float3 cameraWorldPosition;
     float3 ambientLightColor;
@@ -35,13 +44,29 @@ struct VertexOut {
     float3 worldNormal;
     float3 worldPosition;
     float2 texCoords;
+    
+    float distance_to_object;
 };
 
 struct VertexUniforms {
     float4x4 viewProjectionMatrix;
     float4x4 modelMatrix;
     float3x3 normalMatrix;
+    float4x4 viewMatrix;
 };
+
+float getFogFactor(FogParameters params, float fFogCoord)
+{
+    float fResult = 0.0;
+    if(params.iEquation == 0) // линейный туман
+        fResult = (params.fEnd - fFogCoord)/(params.fEnd - params.fStart);
+    else if(params.iEquation == 1) // экспоненциальный туман
+        fResult = exp(-params.fDensity * fFogCoord);
+    else if(params.iEquation == 2) // экспоненциальный туман 2
+        fResult = exp(-pow(params.fDensity * fFogCoord, 2.0));
+    fResult = 1.0 - clamp(fResult, 0.0, 1.0);
+    return fResult;
+}
 
 vertex VertexOut vertex_main(VertexIn vertexIn [[stage_in]],
                              constant VertexUniforms &uniforms [[buffer(1)]])
@@ -52,11 +77,19 @@ vertex VertexOut vertex_main(VertexIn vertexIn [[stage_in]],
     vertexOut.worldPosition = worldPosition.xyz;
     vertexOut.worldNormal = uniforms.normalMatrix * vertexIn.normal;
     vertexOut.texCoords = vertexIn.texCoords;
+    
+    float4x4 model_view_matrix = uniforms.viewMatrix * uniforms.modelMatrix;
+    
+    // Calculate the distance to the object which is used for how much fog obsures the object
+    float4 position_modelviewspace = model_view_matrix * float4(vertexIn.position, 1);
+    vertexOut.distance_to_object = abs(position_modelviewspace.z/position_modelviewspace.w);
+    
     return vertexOut;
 }
 
 fragment float4 fragment_main(VertexOut fragmentIn [[stage_in]],
                               constant FragmentUniforms &uniforms [[buffer(0)]],
+                              constant FogParameters &fogParams [[buffer(1)]],
                               texture2d<float, access::sample> baseColorTexture [[texture(0)]],
                               sampler baseColorSampler [[sampler(0)]])
 {
@@ -78,5 +111,8 @@ fragment float4 fragment_main(VertexOut fragmentIn [[stage_in]],
         specularIntensity * lightColor * specularColor;
     }
     
-    return float4(finalColor, 1);
+    float3 fogColor = finalColor;
+    fogColor = mix(finalColor, fogParams.color, getFogFactor(fogParams, fragmentIn.distance_to_object));
+
+    return float4(fogColor, 1.0f);
 }

@@ -38,9 +38,6 @@ static const NSUInteger AAPLMaxBuffersInFlight = 3;
     //   This is the current frame number modulo AAPLMaxBuffersInFlight
     uint8_t _uniformBufferIndex;
 
-    // Projection matrix calculated as a function of view size
-    matrix_float4x4 _projectionMatrix;
-
     // Current rotation of our object in radians
     float _rotation;
 
@@ -188,9 +185,9 @@ static const NSUInteger AAPLMaxBuffersInFlight = 3;
     _mtlVertexDescriptor.layouts[AAPLBufferIndexMeshGenerics].stepRate = 1;
     _mtlVertexDescriptor.layouts[AAPLBufferIndexMeshGenerics].stepFunction = MTLVertexStepFunctionPerVertex;
 
-    view.depthStencilPixelFormat = MTLPixelFormatDepth32Float_Stencil8;
-    view.colorPixelFormat = MTLPixelFormatBGRA8Unorm_sRGB;
-    view.sampleCount = 1;
+    //view.depthStencilPixelFormat = MTLPixelFormatDepth32Float_Stencil8;
+   // view.colorPixelFormat = MTLPixelFormatBGRA8Unorm_sRGB;
+   // view.sampleCount = 1;
 
     // Create a reusable pipeline state
     MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
@@ -279,7 +276,7 @@ static const NSUInteger AAPLMaxBuffersInFlight = 3;
     modelIOVertexDescriptor.attributes[AAPLVertexAttributeTangent].name   = MDLVertexAttributeTangent;
     modelIOVertexDescriptor.attributes[AAPLVertexAttributeBitangent].name = MDLVertexAttributeBitangent;
 
-    NSURL *modelFileURL = [[NSBundle mainBundle] URLForResource:@"Models/firetruck.obj"
+    NSURL *modelFileURL = [[NSBundle mainBundle] URLForResource:@"firetruck.obj"
                                                   withExtension:nil];
 
     if(!modelFileURL)
@@ -382,11 +379,9 @@ static const NSUInteger AAPLMaxBuffersInFlight = 3;
 
     uniformsLeft->lightPosition = (vector_float3) {0.f, 60.f, -60.f};
 
-    const vector_float3 cameraTranslation = {0.0, 5.0, 40.0};
-    const matrix_float4x4 viewMatrix = matrix4x4_translation (-cameraTranslation);
-    const matrix_float4x4 viewProjectionMatrix  = matrix_multiply (_projectionMatrix, viewMatrix);
+    const matrix_float4x4 viewProjectionMatrix  = matrix_multiply (_projectionMatrix, self.viewMatrix);
 
-    uniformsLeft->cameraPos = cameraTranslation;
+    uniformsLeft->cameraPos = self.cameraPos;
 
     *uniformsRight = *uniformsLeft;
 
@@ -581,6 +576,84 @@ static const NSUInteger AAPLMaxBuffersInFlight = 3;
 
     // Finalize rendering here & push the command buffer to the GPU
     [commandBuffer commit];
+}
+
+- (void)drawInMTKView:(nonnull MTKView *)view withCommandEncoder:(nonnull id)renderEncoder {
+    
+    MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
+    [renderEncoder setFragmentTexture:_irradianceMap
+                              atIndex:AAPLTextureIndexIrradianceMap];
+    
+    for (AAPLMesh *mesh in _meshes)
+    {
+        MTKMesh *metalKitMesh = mesh.metalKitMesh;
+        
+        // Set mesh's vertex buffers
+        for (NSUInteger bufferIndex = 0; bufferIndex < metalKitMesh.vertexBuffers.count; bufferIndex++)
+        {
+            MTKMeshBuffer *vertexBuffer = metalKitMesh.vertexBuffers[bufferIndex];
+            if((NSNull *)vertexBuffer != [NSNull null])
+            {
+                [renderEncoder setVertexBuffer:vertexBuffer.buffer
+                                        offset:vertexBuffer.offset
+                                       atIndex:bufferIndex];
+            }
+        }
+        
+        // Draw each submesh of our mesh
+        for(AAPLSubmesh *submesh in mesh.submeshes)
+        {
+            // Set all textures for the submesh regardless of whether their sampled from
+            //   (i.e. we're really saving on the sampling in the shader at low quality levels,
+            //   not the setting of the texture in the encoder, so we may as well set all the
+            //   texture for this submesh)
+            for(AAPLTextureIndex textureIndex = 0; textureIndex < AAPLNumMeshTextureIndices; textureIndex++)
+            {
+                [renderEncoder setFragmentTexture:submesh.textures[textureIndex] atIndex:textureIndex];
+            }
+            
+            // Sets the weight of values sampled from a texture vs value from a material uniform
+            //   for a transition between quality levels
+            [submesh computeTextureWeightsForQualityLevel:_currentQualityLevel
+                                      withGlobalMapWeight:_globalMapWeight];
+            
+            // Set the material uniforms
+            [renderEncoder setFragmentBuffer:submesh.materialUniforms
+                                      offset:0
+                                     atIndex:AAPLBufferIndexMaterialUniforms];
+            
+            MTKSubmesh *metalKitSubmesh = submesh.metalKitSubmmesh;
+            
+            for (NSUInteger viewportIndex = 0; viewportIndex < AAPLNumViewports; viewportIndex++)
+            {
+                MTLViewport currentViewport = {
+                    viewportIndex * renderPassDescriptor.colorAttachments[0].texture.width/AAPLNumViewports,
+                    0.0,
+                    renderPassDescriptor.colorAttachments[0].texture.width/AAPLNumViewports,
+                    renderPassDescriptor.colorAttachments[0].texture.height,
+                    0.0,
+                    1.0 };
+                
+                [renderEncoder setViewport:currentViewport];
+                // Set the buffers fed into our render pipeline
+                
+                [renderEncoder setVertexBuffer:_uniformBuffers[_uniformBufferIndex][viewportIndex]
+                                        offset:0
+                                       atIndex:AAPLBufferIndexUniforms];
+                
+                [renderEncoder setFragmentBuffer:_uniformBuffers[_uniformBufferIndex][viewportIndex]
+                                          offset:0
+                                         atIndex:AAPLBufferIndexUniforms];
+                
+                [renderEncoder drawIndexedPrimitives:metalKitSubmesh.primitiveType
+                                          indexCount:metalKitSubmesh.indexCount
+                                           indexType:metalKitSubmesh.indexType
+                                         indexBuffer:metalKitSubmesh.indexBuffer.buffer
+                                   indexBufferOffset:metalKitSubmesh.indexBuffer.offset];
+            }
+            
+        }
+    }
 }
 
 @end

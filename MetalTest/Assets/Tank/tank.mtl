@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /Users/bjorn/projects/blockens-perspective/assets/media/tank.jpg
+map_Kd tank.jpg
 
 newmtl Tank_TTread.jpg
 Ns 182.352941
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /Users/bjorn/projects/blockens-perspective/assets/media/TTread.jpg
+map_Kd tank_treads.jpg
 
 newmtl Treads
 Ns 182.352941
@@ -32,4 +32,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /Users/bjorn/projects/blockens-perspective/assets/media/TTread.jpg
+map_Kd tank_treads.jpg

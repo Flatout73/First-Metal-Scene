@@ -13,7 +13,7 @@
 #include <metal_texture>
 #include <metal_stdlib>
 
-#include "AAPLSharedTypes.h"
+#include "SkyboxHeader.h"
 
 using namespace metal;
 
@@ -25,11 +25,12 @@ struct CubeVertexOutput
 
 vertex CubeVertexOutput skyboxVertex(constant float4 *pos_data [[ buffer(SKYBOX_VERTEX_BUFFER) ]],
                                      constant float4 *texcoord [[ buffer(SKYBOX_TEXCOORD_BUFFER) ]],
-                                     constant AAPL::uniforms_t& uniforms [[ buffer(SKYBOX_CONSTANT_BUFFER) ]],
+                                     constant AAPL::VertexUniforms& uniforms [[ buffer(SKYBOX_CONSTANT_BUFFER) ]],
                                      uint vid [[vertex_id]])
 {
     CubeVertexOutput out;
-    out.position = uniforms.skybox_modelview_projection_matrix * pos_data[vid];
+    float4 worldPosition = uniforms.modelMatrix * pos_data[vid];
+    out.position = uniforms.viewProjectionMatrix * worldPosition;
     out.texCoords = texcoord[vid].xyz;
     return out;
 }
