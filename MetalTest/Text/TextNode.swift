@@ -38,7 +38,7 @@ class TextNode: Node {
         
         let bufferAllocator = MTKMeshBufferAllocator(device: device)
         let font = CTFontCreateWithName("HoeflerText-Black" as CFString, 30, nil)
-        let textMesh = MBETextMesh.mesh(with: "Hello", font: font, extrusionDepth: 16.0, vertexDescriptor: vertexDescriptor, bufferAllocator: bufferAllocator)!
+        let textMesh = MBETextMesh.mesh(with: name, font: font, extrusionDepth: 16.0, vertexDescriptor: vertexDescriptor, bufferAllocator: bufferAllocator)!
         
         self.meshes.append(textMesh)
         

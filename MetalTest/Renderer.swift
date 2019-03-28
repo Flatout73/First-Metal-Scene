@@ -56,6 +56,7 @@ class Renderer: NSObject {
     }
     
     let skybox = SkyBox()
+    let tank = HelmetNode(name: "tank")
     
     func buildScene(device: MTLDevice) -> Scene {
         let textureLoader = RenderUtils.shared.textureLoader
@@ -63,56 +64,86 @@ class Renderer: NSObject {
         
         let scene = Scene()
         
-        scene.ambientLightColor = float3(0.01, 0.01, 0.01)
-        let light0 = Light(worldPosition: float3( 2,  2, 2), color: float3(1, 0, 0))
-        let light1 = Light(worldPosition: float3(-2,  2, 2), color: float3(0, 1, 0))
-        let light2 = Light(worldPosition: float3( 0, -2, 2), color: float3(0, 0, 1))
+        scene.ambientLightColor = float3(0.1, 0.1, 0.1)
+        let light0 = Light(worldPosition: float3( 2,  3, 0), color: float3(1, 0, 0))
+        let light1 = Light(worldPosition: float3(-2,  3, 3), color: float3(0, 1, 0))
+        let light2 = Light(worldPosition: float3( 0,  3, -3), color: float3(0, 0, 1))
         scene.lights = [ light0, light1, light2 ]
         
+        for x in stride(from: -100, to: 100, by: 10) {
+            for z in stride(from: -40, to: 40, by: 40) {
+                let cube = ShapeNode(name: "Cube", shape: .Cube)
+                cube.loadAssets(device, view: view)
+                let cubematerial = Material(baseColorTexture: try? textureLoader.newTexture(name: "brick", scaleFactor: 1.0, bundle: nil, options: options))
+                ///cubematerial.specularPower = 50
+                //cubematerial.specularColor = float3(0.8, 0.8, 0.8)
+                cube.scene = scene
+                cube.modelMatrix = float4x4(translationBy: float3(Float(x), -1, Float(z))) * float4x4(rotationAbout: float3(0, 1, 0), by: Float(x)) * float4x4(scaleBy: 0.5)
+                cube.materials = [cubematerial]
+                scene.rootNode.children.append(cube)
+            }
+        }
         
-        let cube = ShapeNode(name: "Cube", shape: .Cube)
-        cube.loadAssets(device, view: view)
-        let cubematerial = Material(baseColorTexture: try? textureLoader.newTexture(name: "spot_texture", scaleFactor: 1.0, bundle: nil, options: options))
-        cube.scene = scene
-        cube.materials = [cubematerial]
-        scene.rootNode.children.append(cube)
+        for x in stride(from: -300, to: 300, by: 30) {
+            for z in stride(from: -300, to: 300, by: 30) {
+                
+                if (x < 160 && x > -160) && (z < 70 && z > -70) {
+                    continue
+                }
+                let cube = ShapeNode(name: "Cube", shape: .Cube)
+                cube.loadAssets(device, view: view)
+                let cubematerial = Material(baseColorTexture: try? textureLoader.newTexture(name: "brick", scaleFactor: 1.0, bundle: nil, options: options))
+                ///cubematerial.specularPower = 50
+                //cubematerial.specularColor = float3(0.8, 0.8, 0.8)
+                cube.scene = scene
+                cube.modelMatrix = float4x4(translationBy: float3(Float(x + (z/10 % 2 == 0 ? 8 : -8)), 5, Float(z + (x/10 % 2 == 0 ? 8 : -8)))) * float4x4(rotationAbout: float3(0, 1, 0), by: Float(x)) * float4x4(scaleBy: 2.5)
+                cube.materials = [cubematerial]
+                scene.rootNode.children.append(cube)
+            }
+        }
         
-        let modelURL = Bundle.main.url(forResource: "spot_control_mesh", withExtension: "obj")!
-        let teapot = ShapeNode(name: "Teapot", shape: .Simple(url: modelURL))
-        
-        teapot.loadAssets(device, view: view)
-        let material = Material(baseColorTexture: try? textureLoader.newTexture(name: "spot_texture", scaleFactor: 1.0, bundle: nil, options: options))
-        material.specularPower = 200
+        let modelURL = Bundle.main.url(forResource: "blub", withExtension: "obj")!
+        let blub = ShapeNode(name: "blub", shape: .Simple(url: modelURL))
+        blub.loadAssets(device, view: view)
+        let material = Material(baseColorTexture: try? textureLoader.newTexture(name: "blub_baseColor", scaleFactor: 1.0, bundle: nil, options: options))
+        material.specularPower = 100
         material.specularColor = float3(0.8, 0.8, 0.8)
-        teapot.materials.append(material)
-        teapot.scene = scene
-        //scene.rootNode.children.append(teapot)
+        blub.materials.append(material)
+        blub.scene = scene
+        blub.modelMatrix = float4x4(translationBy: float3(-120, -1, -20)) * float4x4(rotationAbout: float3(0, 0 , 1), by: Float.pi/2) * float4x4(scaleBy: 10)
+        scene.rootNode.children.append(blub)
         
         let surface = ShapeNode(name: "Surface", shape: .Plane)
-        
         let material2 = Material(baseColorTexture: try? textureLoader.newTexture(name: "marsTexture", scaleFactor: 1.0, bundle: nil, options: options))
         surface.loadAssets(device, view: view)
         material2.specularColor = float3(0.8, 0.8, 0.8)
         surface.materials.append(material2)
-        surface.modelMatrix = float4x4(translationBy: float3(0, -3, 0)) * float4x4(scaleBy: 20)
+        surface.modelMatrix = float4x4(translationBy: float3(0, -3, 0)) * float4x4(scaleBy: 100) //* float4x4(rotationAbout: float3(1, 0, 0), by: Float.pi)
         surface.scene = scene
         scene.rootNode.children.append(surface)
         
         skybox.loadAssets(device, view: view)
         skybox.scene = scene
         
-//        let helmet = HelmetNode(name: "Helmet")
-//        helmet.loadAssets(device, view: view)
-//        helmet.modelMatrix = float4x4(translationBy: float3(0, 0, 0))
-//        scene.rootNode.children.append(helmet)
-
-//        let car = CarNode(name: "Car")
-//        car.loadAssets(device, view: view)
-//        scene.rootNode.children.append(car)
+        let treasure = HelmetNode(name: "treasure_chest")
+        treasure.loadAssets(device, view: view)
+        treasure.modelMatrix = float4x4(translationBy: float3(130, -3, -20)) * float4x4(rotationAbout: float3(0, 1, 0), by: Float.pi/2)
+        scene.rootNode.children.append(treasure)
         
-        let text = TextNode(name: "Text")
+        let text = TextNode(name: "Easter egg")
         text.loadAssets(device, view: view)
-        //scene.rootNode.children.append(text)
+        text.modelMatrix = float4x4(translationBy: float3(0, -100, -50))
+        scene.rootNode.children.append(text)
+        
+        let text2 = TextNode(name: "Text")
+        text2.loadAssets(device, view: view)
+        text2.modelMatrix = float4x4(translationBy: float3(50, -100, -50))
+        scene.rootNode.children.append(text2)
+        
+    
+        tank.loadAssets(device, view: view)
+        tank.modelMatrix = float4x4(translationBy: float3(-99, -3, -20)) * float4x4(scaleBy: 2) * float4x4(rotationAbout: float3(0, 1, 0), by: Float.pi)
+        scene.rootNode.children.append(tank)
         
 //        let terrainMesh = TerrainMesh(width: 64, height: 3, iterations: 6, smoothness: 0.95, device: device)
 //        let terrainNode = Node(name: "Terrain")
@@ -126,23 +157,17 @@ class Renderer: NSObject {
     
     let updateCameraY = float3([0, 1, 0])
     
-    let velocity: Float = 2
+    let velocity: Float = 0.01
     
     var currentCameraTranslation: (x: Float, z: Float) = (0, 0)
     var currentCameraRotation: (x: Float, y: Float) = (0, 0)
     func updateCamera() {
         RenderUtils.shared.flyingCamera.update(deltaX: currentCameraRotation.x, deltaY: currentCameraRotation.y, cameraTranslation: currentCameraTranslation)
-       // cameraHeading += angularVelocity * time
-        
-        // update camera location based on current heading
-       // cameraWorldPosition.x += currentCameraTranslation.x / 10 //-sin(cameraHeading) * velocity * time
-      //  cameraWorldPosition.z += currentCameraTranslation.z / 10 //-cos(cameraHeading) * velocity * time
-        //cameraWorldPosition = positionConstrainedToTerrain(forPosition: cameraPosition)
-        //cameraWorldPosition.y += Float(MBECameraHeight)
+
         currentCameraRotation = (0, 0)
     }
 
-    
+    var reversed = false
     func update(_ view: MTKView) {
         time += 1 / Float(view.preferredFramesPerSecond)
         updateCamera()
@@ -151,7 +176,19 @@ class Renderer: NSObject {
         let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
         projectionMatrix = float4x4(perspectiveProjectionFov: Float.pi / 3, aspectRatio: aspectRatio, nearZ: 0.1, farZ: 10000)
         
-        let angle = -time
+     //   let angle = -time
+        if tank.modelMatrix[3].x < 100 && !reversed {
+            tank.modelMatrix = tank.modelMatrix * float4x4(translationBy: float3(-time * velocity, 0, 0))
+        } else {
+            if !reversed {
+                reversed = true
+            }
+            if tank.modelMatrix[3].x > -100 {
+                tank.modelMatrix = tank.modelMatrix * float4x4(translationBy: float3(time * velocity, 0, 0))
+            } else {
+                reversed = false
+            }
+        }
        // scene.rootNode.modelMatrix = float4x4(rotationAbout: float3(0, 1, 0), by: angle) *  float4x4(scaleBy: 1.5)
     }
     
@@ -183,7 +220,7 @@ extension Renderer: MTKViewDelegate {
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-         //commandEncoder.setFrontFacing(.counterClockwise)
+         commandEncoder.setFrontFacing(.counterClockwise)
          //commandEncoder.setCullMode(.back)
         commandEncoder.setDepthStencilState(depthStencilState)
         commandEncoder.setFragmentSamplerState(samplerState, index: 0)

@@ -36,13 +36,15 @@ struct FogParameters {
     var color: float3
     var start: Float
     var end: Float
-    var demsity: Float
+    var density: Float
     
     var iEquation: Int32
 }
 
 class ShapeNode: Node {
     var scene: Scene!
+    
+    var isFogged = true
     
     let shape: Shape
     init(name: String, shape: Shape) {
@@ -71,6 +73,7 @@ class ShapeNode: Node {
         case .Plane:
             let dimension: Float = 8.0
             meshes = [try! MTKMesh(mesh: MDLMesh.newPlane(withDimensions: float2(dimension, dimension), segments: vector_uint2(1, 1), geometryType: .quads, allocator: bufferAllocator), device: device)]
+            isFogged = false
         case .Simple(let modelURL):
             let asset = MDLAsset(url: modelURL, vertexDescriptor: vertexDescriptor, bufferAllocator: bufferAllocator)
             meshes = try! MTKMesh.newMeshes(asset: asset, device: device).metalKitMeshes
@@ -108,9 +111,15 @@ class ShapeNode: Node {
                                                 light2: scene.lights[2])
         commandEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.size, index: 0)
         
-        var fog = FogParameters(color: float3(0.5, 0.5, 0.5), start: 10, end: 75, demsity: 0.04, iEquation: 0)
-        commandEncoder.setFragmentBytes(&fog, length: MemoryLayout<FogParameters>.size, index: 1)
-        
+        if isFogged {
+            commandEncoder.setFragmentBytes(&RenderUtils.shared.fog, length: MemoryLayout<FogParameters>.size, index: 1)
+        } else {
+            var fog: FogParameters = RenderUtils.shared.fog
+            fog.density = 0.1
+            fog.iEquation = 4
+            commandEncoder.setFragmentBytes(&fog, length: MemoryLayout<FogParameters>.size, index: 1)
+        }
+    
         commandEncoder.setFragmentTexture(baseColorTexture, index: 0)
         
         for mesh in meshes {

@@ -80,7 +80,7 @@ class HelmetNode: Node {
     }
     
     func loadCar(device: MTLDevice, pipelineStateDescriptor: MTLRenderPipelineDescriptor) {
-        guard let modelURL = Bundle.main.url(forResource: "treasure_chest", withExtension: "obj") else {
+        guard let modelURL = Bundle.main.url(forResource: name, withExtension: "obj") else {
             fatalError("Could not find model file in app bundle")
         }
         
@@ -135,11 +135,10 @@ class HelmetNode: Node {
     override func render(_ commandEncoder: MTLRenderCommandEncoder, projectionMatrix: float4x4, viewMatrix: float4x4) {
         super.render(commandEncoder, projectionMatrix: projectionMatrix, viewMatrix: viewMatrix)
         
+        let cameraWorldPosition = RenderUtils.shared.flyingCamera.vEye
+        let lightWorldPosition = float3(0, 0, 0)
+        let lightWorldDirection = float3(-10, -2, 0)
         for mesh in meshes {
-            let cameraWorldPosition = viewMatrix.inverse[3].xyz
-            let lightWorldPosition = cameraWorldPosition
-            let lightWorldDirection = normalize(cameraWorldPosition)
-            
             var uniforms = Uniforms(modelMatrix: self.modelMatrix,
                                     viewMatrix: viewMatrix,
                                     projectionMatrix: projectionMatrix,
@@ -149,8 +148,7 @@ class HelmetNode: Node {
             commandEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: VertexBufferIndex.uniforms.rawValue)
             commandEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: FragmentBufferIndex.uniforms.rawValue)
             
-            var fog = FogParameters(color: float3(0.5, 0.5, 0.5), start: 10, end: 75, demsity: 0.04, iEquation: 0)
-            commandEncoder.setFragmentBytes(&fog, length: MemoryLayout<FogParameters>.size, index: 1)
+            commandEncoder.setFragmentBytes(&RenderUtils.shared.fog, length: MemoryLayout<FogParameters>.size, index: 1)
             
             for (bufferIndex, vertexBuffer) in mesh.vertexBuffers.enumerated() {
                 commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: vertexBuffer.offset, index: bufferIndex)

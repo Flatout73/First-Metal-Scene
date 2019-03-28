@@ -13,6 +13,10 @@ class RenderUtils {
     public let device: MTLDevice
     public let textureLoader: MTKTextureLoader
     
+    var moveSpeedX: Float = 1.0
+    
+    public var fog = FogParameters(color: float3(0.5, 0.5, 0.5), start: 30, end: 75, density: 0.02, iEquation: 0)
+    
     public var flyingCamera = FlyingCamera()
     
     private init() {

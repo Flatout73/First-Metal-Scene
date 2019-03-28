@@ -10,7 +10,5 @@
 #define MetalTest_Bridging_Header_h
 
 #import "MBETextMesh.h"
-#import "AAPLRenderer.h"
-#import "AAPLShaderTypes.h"
 
 #endif /* MetalTest_Bridging_Header_h */

@@ -30,9 +30,8 @@ struct FlyingCamera {
         
         //var iMove = 0;
         var vMoveBy = float3(0, 0, 0)
-        let move: Float = 0.5
-        //    if (Keys::Key(GLFW_KEY_LEFT_SHIFT))
-        //    move = 3.0f;
+        let move: Float = RenderUtils.shared.moveSpeedX
+     
         // Get vector of move
         if cameraTranslation.z < 0 {
             vMoveBy += vMove * move

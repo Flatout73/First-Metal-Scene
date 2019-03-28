@@ -18,9 +18,9 @@ struct Light {
 
 struct FogParameters {
     float3 color;
-    float fStart;
-    float fEnd;
-    float fDensity;
+    float start;
+    float end;
+    float density;
 
     int iEquation;
 };
@@ -59,11 +59,11 @@ float getFogFactor(FogParameters params, float fFogCoord)
 {
     float fResult = 0.0;
     if(params.iEquation == 0) // линейный туман
-        fResult = (params.fEnd - fFogCoord)/(params.fEnd - params.fStart);
+        fResult = (params.end - fFogCoord)/(params.end - params.start);
     else if(params.iEquation == 1) // экспоненциальный туман
-        fResult = exp(-params.fDensity * fFogCoord);
+        fResult = exp(-params.density * fFogCoord);
     else if(params.iEquation == 2) // экспоненциальный туман 2
-        fResult = exp(-pow(params.fDensity * fFogCoord, 2.0));
+        fResult = exp(-pow(params.density * fFogCoord, 2.0));
     fResult = 1.0 - clamp(fResult, 0.0, 1.0);
     return fResult;
 }
@@ -112,7 +112,11 @@ fragment float4 fragment_main(VertexOut fragmentIn [[stage_in]],
     }
     
     float3 fogColor = finalColor;
-    fogColor = mix(finalColor, fogParams.color, getFogFactor(fogParams, fragmentIn.distance_to_object));
+    if (fogParams.iEquation != 4) {
+        fogColor = mix(finalColor, fogParams.color, getFogFactor(fogParams, fragmentIn.distance_to_object));
+    } else {
+        fogColor = mix(finalColor, fogParams.color, 0.7);
+    }
 
     return float4(fogColor, 1.0f);
 }

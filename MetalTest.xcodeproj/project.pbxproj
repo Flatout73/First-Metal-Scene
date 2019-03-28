@@ -7,12 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7100E3592248434700198AE1 /* Futuristic_Car.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 7100E3572248434700198AE1 /* Futuristic_Car.mtl */; };
-		7100E35A2248434700198AE1 /* Futuristic_Car.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7100E3582248434700198AE1 /* Futuristic_Car.obj */; };
-		7100E3602248434F00198AE1 /* Futuristic_Car_N.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7100E35C2248434F00198AE1 /* Futuristic_Car_N.jpg */; };
-		7100E3612248434F00198AE1 /* Futuristic_Car_S.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7100E35D2248434F00198AE1 /* Futuristic_Car_S.jpg */; };
-		7100E3622248434F00198AE1 /* Futuristic_Car_C.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7100E35E2248434F00198AE1 /* Futuristic_Car_C.jpg */; };
-		7100E3632248434F00198AE1 /* REF 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7100E35F2248434F00198AE1 /* REF 1.jpg */; };
 		7101BC392226C6BE00C0D90C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7101BC382226C6BE00C0D90C /* AppDelegate.swift */; };
 		7101BC3B2226C6BE00C0D90C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7101BC3A2226C6BE00C0D90C /* ViewController.swift */; };
 		7101BC3D2226C6C000C0D90C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7101BC3C2226C6C000C0D90C /* Assets.xcassets */; };
@@ -20,8 +14,6 @@
 		7101BC492226F7EA00C0D90C /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7101BC482226F7EA00C0D90C /* Renderer.swift */; };
 		7101BC4B2226F84A00C0D90C /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7101BC4A2226F84A00C0D90C /* Shader.metal */; };
 		710547F522466E4B00D73596 /* HelmetNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710547F422466E4B00D73596 /* HelmetNode.swift */; };
-		710547F822466F7200D73596 /* firetruck.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 710547F622466F7100D73596 /* firetruck.mtl */; };
-		710547F922466F7200D73596 /* firetruck.obj in Resources */ = {isa = PBXBuildFile; fileRef = 710547F722466F7100D73596 /* firetruck.obj */; };
 		7105480522467D7600D73596 /* garage_pmrem.ktx in Resources */ = {isa = PBXBuildFile; fileRef = 710547FB22467D7600D73596 /* garage_pmrem.ktx */; };
 		7105480622467D7600D73596 /* helmet_normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 710547FC22467D7600D73596 /* helmet_normal.jpg */; };
 		7105480722467D7600D73596 /* helmet.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 710547FD22467D7600D73596 /* helmet.mtl */; };
@@ -49,22 +41,14 @@
 		7105483C2247F50800D73596 /* TextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105483B2247F50800D73596 /* TextNode.swift */; };
 		7105483E2247F5C800D73596 /* Material.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105483D2247F5C800D73596 /* Material.swift */; };
 		710548472248087700D73596 /* ShapeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710548462248087700D73596 /* ShapeNode.swift */; };
-		710548492248121E00D73596 /* CarNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710548482248121E00D73596 /* CarNode.swift */; };
-		7105484B224813C600D73596 /* Car.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7105484A224813C600D73596 /* Car.metal */; };
-		7105485922481ECB00D73596 /* AAPLMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 7105485822481ECB00D73596 /* AAPLMesh.m */; };
-		7105485C22481EF700D73596 /* AAPLMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7105485A22481EF700D73596 /* AAPLMathUtilities.m */; };
-		7105485F22481F5E00D73596 /* AAPLRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7105485E22481F5D00D73596 /* AAPLRenderer.m */; };
 		7105486222482F1E00D73596 /* BMW X5 4.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7105486022482F1E00D73596 /* BMW X5 4.obj */; };
 		7105486322482F1E00D73596 /* BMW X5 4.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 7105486122482F1E00D73596 /* BMW X5 4.mtl */; };
-		710A3013224023E70055B05C /* duck.obj in Resources */ = {isa = PBXBuildFile; fileRef = 710A3012224023E70055B05C /* duck.obj */; };
-		710A3015224024450055B05C /* DuckNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710A3014224024450055B05C /* DuckNode.swift */; };
-		710A3017224025BE0055B05C /* Duck.metal in Sources */ = {isa = PBXBuildFile; fileRef = 710A3016224025BE0055B05C /* Duck.metal */; };
 		710A3019224025FE0055B05C /* RenderUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710A3018224025FE0055B05C /* RenderUtils.swift */; };
-		710A301D224040E50055B05C /* spot_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 710A301C224040E50055B05C /* spot_texture.png */; };
-		710A301F224042550055B05C /* spot_control_mesh.obj in Resources */ = {isa = PBXBuildFile; fileRef = 710A301E224042550055B05C /* spot_control_mesh.obj */; };
 		7121A0CF222C514100203F2B /* MTextureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121A0CE222C514100203F2B /* MTextureLoader.swift */; };
 		7121A0D1222C99BA00203F2B /* MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121A0D0222C99BA00203F2B /* MathUtilities.swift */; };
 		7121A0D3222C9BCE00203F2B /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7121A0D2222C9BCE00203F2B /* teapot.obj */; };
+		7127A624224B0C6800E4F3C6 /* blub.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7127A623224B0C6800E4F3C6 /* blub.obj */; };
+		7127A626224B0D0700E4F3C6 /* spot_quadrangulated.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7127A625224B0D0700E4F3C6 /* spot_quadrangulated.obj */; };
 		71361A9E22458A2D0032E052 /* MainMetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71361A9D22458A2D0032E052 /* MainMetalView.swift */; };
 		71361AA02245935F0032E052 /* FlyingCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71361A9F2245935F0032E052 /* FlyingCamera.swift */; };
 		7150121E224AC6A600AEABB2 /* skybox.png in Resources */ = {isa = PBXBuildFile; fileRef = 7150121D224AC6A600AEABB2 /* skybox.png */; };
@@ -83,12 +67,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7100E3572248434700198AE1 /* Futuristic_Car.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Futuristic_Car.mtl; sourceTree = "<group>"; };
-		7100E3582248434700198AE1 /* Futuristic_Car.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Futuristic_Car.obj; sourceTree = "<group>"; };
-		7100E35C2248434F00198AE1 /* Futuristic_Car_N.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Futuristic_Car_N.jpg; sourceTree = "<group>"; };
-		7100E35D2248434F00198AE1 /* Futuristic_Car_S.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Futuristic_Car_S.jpg; sourceTree = "<group>"; };
-		7100E35E2248434F00198AE1 /* Futuristic_Car_C.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Futuristic_Car_C.jpg; sourceTree = "<group>"; };
-		7100E35F2248434F00198AE1 /* REF 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "REF 1.jpg"; sourceTree = "<group>"; };
 		7101BC352226C6BE00C0D90C /* MetalTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7101BC382226C6BE00C0D90C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7101BC3A2226C6BE00C0D90C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -99,8 +77,6 @@
 		7101BC482226F7EA00C0D90C /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		7101BC4A2226F84A00C0D90C /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
 		710547F422466E4B00D73596 /* HelmetNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelmetNode.swift; sourceTree = "<group>"; };
-		710547F622466F7100D73596 /* firetruck.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firetruck.mtl; sourceTree = "<group>"; };
-		710547F722466F7100D73596 /* firetruck.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firetruck.obj; sourceTree = "<group>"; };
 		710547FB22467D7600D73596 /* garage_pmrem.ktx */ = {isa = PBXFileReference; lastKnownFileType = file; path = garage_pmrem.ktx; sourceTree = "<group>"; };
 		710547FC22467D7600D73596 /* helmet_normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = helmet_normal.jpg; sourceTree = "<group>"; };
 		710547FD22467D7600D73596 /* helmet.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = helmet.mtl; sourceTree = "<group>"; };
@@ -139,15 +115,6 @@
 		7105483D2247F5C800D73596 /* Material.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Material.swift; sourceTree = "<group>"; };
 		710548452247FC6000D73596 /* MetalTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetalTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		710548462248087700D73596 /* ShapeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeNode.swift; sourceTree = "<group>"; };
-		710548482248121E00D73596 /* CarNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarNode.swift; sourceTree = "<group>"; };
-		7105484A224813C600D73596 /* Car.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Car.metal; sourceTree = "<group>"; };
-		7105484C224817F800D73596 /* AAPLShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLShaderTypes.h; sourceTree = "<group>"; };
-		7105485722481ECB00D73596 /* AAPLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLMesh.h; sourceTree = "<group>"; };
-		7105485822481ECB00D73596 /* AAPLMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLMesh.m; sourceTree = "<group>"; };
-		7105485A22481EF700D73596 /* AAPLMathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLMathUtilities.m; sourceTree = "<group>"; };
-		7105485B22481EF700D73596 /* AAPLMathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLMathUtilities.h; sourceTree = "<group>"; };
-		7105485D22481F5D00D73596 /* AAPLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLRenderer.h; sourceTree = "<group>"; };
-		7105485E22481F5D00D73596 /* AAPLRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLRenderer.m; sourceTree = "<group>"; };
 		7105486022482F1E00D73596 /* BMW X5 4.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BMW X5 4.obj"; sourceTree = "<group>"; };
 		7105486122482F1E00D73596 /* BMW X5 4.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BMW X5 4.mtl"; sourceTree = "<group>"; };
 		7107939522487171005398EA /* alpha-island_ft.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alpha-island_ft.tga"; sourceTree = "<group>"; };
@@ -156,15 +123,12 @@
 		7107939822487172005398EA /* alpha-island_rt.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alpha-island_rt.tga"; sourceTree = "<group>"; };
 		7107939922487172005398EA /* alpha-island_up.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alpha-island_up.tga"; sourceTree = "<group>"; };
 		7107939A22487172005398EA /* alpha-island_dn.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alpha-island_dn.tga"; sourceTree = "<group>"; };
-		710A3012224023E70055B05C /* duck.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = duck.obj; sourceTree = "<group>"; };
-		710A3014224024450055B05C /* DuckNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckNode.swift; sourceTree = "<group>"; };
-		710A3016224025BE0055B05C /* Duck.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Duck.metal; sourceTree = "<group>"; };
 		710A3018224025FE0055B05C /* RenderUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderUtils.swift; sourceTree = "<group>"; };
-		710A301C224040E50055B05C /* spot_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spot_texture.png; sourceTree = "<group>"; };
-		710A301E224042550055B05C /* spot_control_mesh.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spot_control_mesh.obj; sourceTree = "<group>"; };
 		7121A0CE222C514100203F2B /* MTextureLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTextureLoader.swift; sourceTree = "<group>"; };
 		7121A0D0222C99BA00203F2B /* MathUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtilities.swift; sourceTree = "<group>"; };
 		7121A0D2222C9BCE00203F2B /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		7127A623224B0C6800E4F3C6 /* blub.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = blub.obj; sourceTree = "<group>"; };
+		7127A625224B0D0700E4F3C6 /* spot_quadrangulated.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spot_quadrangulated.obj; sourceTree = "<group>"; };
 		71361A9D22458A2D0032E052 /* MainMetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMetalView.swift; sourceTree = "<group>"; };
 		71361A9F2245935F0032E052 /* FlyingCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingCamera.swift; sourceTree = "<group>"; };
 		7150121D224AC6A600AEABB2 /* skybox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skybox.png; sourceTree = "<group>"; };
@@ -194,19 +158,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7100E35B2248434F00198AE1 /* FuturisticCar */ = {
-			isa = PBXGroup;
-			children = (
-				7100E3572248434700198AE1 /* Futuristic_Car.mtl */,
-				7100E3582248434700198AE1 /* Futuristic_Car.obj */,
-				7100E35C2248434F00198AE1 /* Futuristic_Car_N.jpg */,
-				7100E35D2248434F00198AE1 /* Futuristic_Car_S.jpg */,
-				7100E35E2248434F00198AE1 /* Futuristic_Car_C.jpg */,
-				7100E35F2248434F00198AE1 /* REF 1.jpg */,
-			);
-			path = FuturisticCar;
-			sourceTree = "<group>";
-		};
 		7101BC2C2226C6BD00C0D90C = {
 			isa = PBXGroup;
 			children = (
@@ -226,7 +177,6 @@
 		7101BC372226C6BE00C0D90C /* MetalTest */ = {
 			isa = PBXGroup;
 			children = (
-				7105485622481EA800D73596 /* Firetruck */,
 				710548452247FC6000D73596 /* MetalTest-Bridging-Header.h */,
 				710548322247F4AD00D73596 /* Text */,
 				710548112247F4A400D73596 /* libtess2 */,
@@ -243,14 +193,12 @@
 				71728BBA222DDA730079226A /* Scene.swift */,
 				71728BBC222EA58C0079226A /* Node.swift */,
 				71728BBE222EF51F0079226A /* TerrainMesh.swift */,
-				710A3014224024450055B05C /* DuckNode.swift */,
 				710A3018224025FE0055B05C /* RenderUtils.swift */,
 				71361A9D22458A2D0032E052 /* MainMetalView.swift */,
 				71361A9F2245935F0032E052 /* FlyingCamera.swift */,
 				710547F422466E4B00D73596 /* HelmetNode.swift */,
 				7105483D2247F5C800D73596 /* Material.swift */,
 				710548462248087700D73596 /* ShapeNode.swift */,
-				710548482248121E00D73596 /* CarNode.swift */,
 				71F521AA224AC2590005C090 /* Skybox.swift */,
 			);
 			path = MetalTest;
@@ -327,23 +275,6 @@
 			path = Text;
 			sourceTree = "<group>";
 		};
-		7105485622481EA800D73596 /* Firetruck */ = {
-			isa = PBXGroup;
-			children = (
-				710547F622466F7100D73596 /* firetruck.mtl */,
-				710547F722466F7100D73596 /* firetruck.obj */,
-				7105485722481ECB00D73596 /* AAPLMesh.h */,
-				7105485822481ECB00D73596 /* AAPLMesh.m */,
-				7105485B22481EF700D73596 /* AAPLMathUtilities.h */,
-				7105485A22481EF700D73596 /* AAPLMathUtilities.m */,
-				7105484A224813C600D73596 /* Car.metal */,
-				7105484C224817F800D73596 /* AAPLShaderTypes.h */,
-				7105485D22481F5D00D73596 /* AAPLRenderer.h */,
-				7105485E22481F5D00D73596 /* AAPLRenderer.m */,
-			);
-			path = Firetruck;
-			sourceTree = "<group>";
-		};
 		7107939422487166005398EA /* SkyBox */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,15 +297,12 @@
 				7107939422487166005398EA /* SkyBox */,
 				71FE8D9A22484AA000317744 /* Treasure */,
 				71FE8D912248496E00317744 /* Tank */,
-				7100E35B2248434F00198AE1 /* FuturisticCar */,
 				7105486122482F1E00D73596 /* BMW X5 4.mtl */,
 				7105486022482F1E00D73596 /* BMW X5 4.obj */,
 				710547FA22467D7600D73596 /* Resources */,
-				710A301C224040E50055B05C /* spot_texture.png */,
-				710A3016224025BE0055B05C /* Duck.metal */,
-				710A3012224023E70055B05C /* duck.obj */,
+				7127A623224B0C6800E4F3C6 /* blub.obj */,
+				7127A625224B0D0700E4F3C6 /* spot_quadrangulated.obj */,
 				7121A0D2222C9BCE00203F2B /* teapot.obj */,
-				710A301E224042550055B05C /* spot_control_mesh.obj */,
 				7101BC4A2226F84A00C0D90C /* Shader.metal */,
 				7105480F22467D7D00D73596 /* Helmet.metal */,
 			);
@@ -460,40 +388,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7100E3592248434700198AE1 /* Futuristic_Car.mtl in Resources */,
 				71FE8D972248497E00317744 /* tank_treads.jpg in Resources */,
 				71FE8DA022484AAD00317744 /* treasure_chest.mtl in Resources */,
 				7105480922467D7600D73596 /* helmet.obj in Resources */,
 				7105480E22467D7600D73596 /* helmet_metallic.jpg in Resources */,
-				710A3013224023E70055B05C /* duck.obj in Resources */,
-				7100E3622248434F00198AE1 /* Futuristic_Car_C.jpg in Resources */,
 				7101BC3D2226C6C000C0D90C /* Assets.xcassets in Resources */,
+				7127A624224B0C6800E4F3C6 /* blub.obj in Resources */,
 				7101BC402226C6C000C0D90C /* Main.storyboard in Resources */,
 				7105480622467D7600D73596 /* helmet_normal.jpg in Resources */,
 				710548312247F4A500D73596 /* LICENSE.txt in Resources */,
 				71FE8D9E22484AAD00317744 /* treasure_chest.obj in Resources */,
 				7105482E2247F4A500D73596 /* README.md in Resources */,
 				7105480722467D7600D73596 /* helmet.mtl in Resources */,
-				7100E35A2248434700198AE1 /* Futuristic_Car.obj in Resources */,
-				710A301D224040E50055B05C /* spot_texture.png in Resources */,
 				7150121E224AC6A600AEABB2 /* skybox.png in Resources */,
 				7105480C22467D7600D73596 /* loft_pmrem.ktx in Resources */,
-				7100E3612248434F00198AE1 /* Futuristic_Car_S.jpg in Resources */,
 				7105480D22467D7600D73596 /* helmet_metallicRoughness.png in Resources */,
 				71FE8D9F22484AAD00317744 /* treasure_chest.JPG in Resources */,
 				7105482F2247F4A500D73596 /* .gitignore in Resources */,
-				7100E3602248434F00198AE1 /* Futuristic_Car_N.jpg in Resources */,
 				71FE8D992248497E00317744 /* tank.jpg in Resources */,
-				710A301F224042550055B05C /* spot_control_mesh.obj in Resources */,
 				7105480822467D7600D73596 /* helmet_roughness.jpg in Resources */,
-				710547F922466F7200D73596 /* firetruck.obj in Resources */,
 				71FE8D962248497E00317744 /* tank.mtl in Resources */,
 				7121A0D3222C9BCE00203F2B /* teapot.obj in Resources */,
 				710548302247F4A500D73596 /* alg_outline.md in Resources */,
 				7105486222482F1E00D73596 /* BMW X5 4.obj in Resources */,
+				7127A626224B0D0700E4F3C6 /* spot_quadrangulated.obj in Resources */,
 				7105480B22467D7600D73596 /* helmet_baseColor.png in Resources */,
-				710547F822466F7200D73596 /* firetruck.mtl in Resources */,
-				7100E3632248434F00198AE1 /* REF 1.jpg in Resources */,
 				7105480522467D7600D73596 /* garage_pmrem.ktx in Resources */,
 				7105486322482F1E00D73596 /* BMW X5 4.mtl in Resources */,
 				71FE8D982248497E00317744 /* tank.obj in Resources */,
@@ -507,13 +426,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7105485F22481F5E00D73596 /* AAPLRenderer.m in Sources */,
 				7105483E2247F5C800D73596 /* Material.swift in Sources */,
 				7101BC4B2226F84A00C0D90C /* Shader.metal in Sources */,
 				71728BBF222EF51F0079226A /* TerrainMesh.swift in Sources */,
 				7105483A2247F4C700D73596 /* Text.metal in Sources */,
 				71501220224AC6AC00AEABB2 /* skybox.metal in Sources */,
-				710A3017224025BE0055B05C /* Duck.metal in Sources */,
 				7101BC3B2226C6BE00C0D90C /* ViewController.swift in Sources */,
 				710548292247F4A400D73596 /* sweep.c in Sources */,
 				71361A9E22458A2D0032E052 /* MainMetalView.swift in Sources */,
@@ -522,11 +439,9 @@
 				71F521AB224AC2590005C090 /* Skybox.swift in Sources */,
 				7105483C2247F50800D73596 /* TextNode.swift in Sources */,
 				7105482B2247F4A400D73596 /* tess.c in Sources */,
-				710548492248121E00D73596 /* CarNode.swift in Sources */,
 				7121A0CF222C514100203F2B /* MTextureLoader.swift in Sources */,
 				710548282247F4A400D73596 /* priorityq.c in Sources */,
 				710A3019224025FE0055B05C /* RenderUtils.swift in Sources */,
-				7105485922481ECB00D73596 /* AAPLMesh.m in Sources */,
 				7105482D2247F4A500D73596 /* mesh.c in Sources */,
 				7105482C2247F4A400D73596 /* bucketalloc.c in Sources */,
 				710548472248087700D73596 /* ShapeNode.swift in Sources */,
@@ -534,12 +449,9 @@
 				7105481022467D7D00D73596 /* Helmet.metal in Sources */,
 				71728BBD222EA58C0079226A /* Node.swift in Sources */,
 				7101BC492226F7EA00C0D90C /* Renderer.swift in Sources */,
-				710A3015224024450055B05C /* DuckNode.swift in Sources */,
 				71728BBB222DDA730079226A /* Scene.swift in Sources */,
 				7105482A2247F4A400D73596 /* geom.c in Sources */,
 				710547F522466E4B00D73596 /* HelmetNode.swift in Sources */,
-				7105485C22481EF700D73596 /* AAPLMathUtilities.m in Sources */,
-				7105484B224813C600D73596 /* Car.metal in Sources */,
 				7121A0D1222C99BA00203F2B /* MathUtilities.swift in Sources */,
 				7101BC392226C6BE00C0D90C /* AppDelegate.swift in Sources */,
 				710548272247F4A400D73596 /* dict.c in Sources */,

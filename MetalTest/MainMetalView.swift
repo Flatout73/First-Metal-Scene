@@ -13,6 +13,12 @@ let S_KEY: UInt16 = 1
 let D_KEY: UInt16 = 2
 let W_KEY: UInt16 = 13
 
+let K1_KEY: UInt16 = 18
+let K2_KEY: UInt16 = 19
+let K3_KEY: UInt16 = 20
+
+let K5_KEY: UInt16 = 23
+
 enum Dimension: Int {
     case x = 0
     case y
@@ -62,6 +68,14 @@ class MainMetalView: MTKView {
         case A_KEY:
             moveCamera(dimension: .x, modifier: 0)
             break
+        case K1_KEY:
+            RenderUtils.shared.fog.iEquation = 0
+        case K2_KEY:
+            RenderUtils.shared.fog.iEquation = 1
+        case K3_KEY:
+            RenderUtils.shared.fog.iEquation = 2
+//        case K5_KEY:
+//            RenderUtils.shared.moveSpeedX = 2.0
         default:
             break
         }
